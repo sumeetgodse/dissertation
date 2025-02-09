@@ -1,4 +1,5 @@
-import ChatBot from "react-chatbotify";
+import ChatBot, { Button } from "react-chatbotify";
+import { ChatIcon } from "../../assets/ChatIcon";
 
 export const Chat = ({ headerHeight }) => {
   async function postQuery(query) {
@@ -46,9 +47,15 @@ export const Chat = ({ headerHeight }) => {
           secondaryColor: "#0d47a1",
           fontFamily: "Inter, system-ui, Avenir, Helvetica, Arial, sans-serif",
           showFooter: false,
-          // showHeader: false,
         },
         chatHistory: { storageKey: "chat-assisstant" },
+        header: {
+          title: "Chat Assistant",
+          showAvatar: false,
+          buttons: [Button.CLOSE_CHAT_BUTTON],
+        },
+        tooltip: undefined,
+        chatButton: { icon: ChatIcon },
       }}
       flow={flow}
     />

@@ -1,25 +1,28 @@
 import { useState, useMemo, useEffect } from "react";
 import { extendTheme } from "@mui/material/styles";
-import ChatIcon from "@mui/icons-material/Chat";
+import CloudIcon from "@mui/icons-material/Cloud";
+import LockIcon from "@mui/icons-material/Lock";
+import AppsIcon from "@mui/icons-material/Apps";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { Chat } from "../chat";
+import { Typography } from "@mui/material";
 
 const NAVIGATION = [
   {
     segment: "resources",
     title: "My Resources",
-    icon: <ChatIcon />,
+    icon: <CloudIcon />,
   },
   {
     segment: "services",
     title: "Services",
-    icon: <ChatIcon />,
+    icon: <AppsIcon />,
   },
   {
     segment: "admin",
     title: "Admin",
-    icon: <ChatIcon />,
+    icon: <LockIcon />,
   },
 ];
 
@@ -32,9 +35,11 @@ const demoTheme = extendTheme({
         },
         secondary: {
           main: "#82b1ff",
-        },  background: {
+        },
+        background: {
           default: "#ffffff",
-        },  text: {
+        },
+        text: {
           primary: "#333333",
         },
       },
@@ -68,7 +73,7 @@ const demoTheme = extendTheme({
   },
 });
 
-const useDemoRouter = (initialPath)=> {
+const useDemoRouter = (initialPath) => {
   const [pathname, setPathname] = useState(initialPath);
 
   const router = useMemo(() => {
@@ -80,6 +85,10 @@ const useDemoRouter = (initialPath)=> {
   }, [pathname]);
 
   return router;
+};
+
+const PageContent = ({ pathname }) => {
+  return <Typography>Dashboard content for {pathname}</Typography>;
 };
 
 export const Container = () => {
@@ -105,8 +114,8 @@ export const Container = () => {
         title: "Product Catalog",
       }}
     >
-      <DashboardLayout>
-       <h1>Hello</h1>
+      <DashboardLayout defaultSidebarCollapsed>
+        <PageContent pathname={router.pathname} />
       </DashboardLayout>
       <Chat headerHeight={headerHeight} />
     </AppProvider>
