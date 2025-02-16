@@ -7,6 +7,7 @@ import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { Chat } from "../chat";
 import { Typography } from "@mui/material";
+import { Services } from "../services";
 
 const NAVIGATION = [
   {
@@ -88,7 +89,10 @@ const useDemoRouter = (initialPath) => {
 };
 
 const PageContent = ({ pathname }) => {
-  return <Typography>Dashboard content for {pathname}</Typography>;
+  if(pathname==='/services'){
+    return <Services/>
+  }
+  return <Typography>{pathname}</Typography>;
 };
 
 export const Container = () => {
