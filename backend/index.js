@@ -24,7 +24,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use('/services', servicesRoute);
+app.use('/api/services', servicesRoute);
 
 app.listen(3006, () => {
     console.log(`Server Started at ${3006}`)

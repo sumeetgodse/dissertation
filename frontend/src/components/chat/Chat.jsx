@@ -1,7 +1,7 @@
 import ChatBot, { Button } from "react-chatbotify";
 import { ChatIcon } from "../../assets/ChatIcon";
 
-export const Chat = ({ headerHeight }) => {
+export const Chat = () => {
   async function postQuery(query) {
     try {
       const response = await fetch(
