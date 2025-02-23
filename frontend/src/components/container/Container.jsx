@@ -19,15 +19,9 @@ import ListItemText from "@mui/material/ListItemText";
 import CloudIcon from "@mui/icons-material/Cloud";
 import LockIcon from "@mui/icons-material/Lock";
 import AppsIcon from "@mui/icons-material/Apps";
-import { Services } from "../services/Services";
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Chat } from "../chat";
+import { Home } from "./Home";
 
 const drawerWidth = 240;
 
@@ -213,12 +207,7 @@ export const Container = () => {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        <Routes>
-          <Route path="/" element={<Navigate to="/resources" />} />
-          <Route path="/resources" element={<h1>My Resources</h1>} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/admin" element={<h1>Admin UI</h1>} />
-        </Routes>
+        <Home />
         <Chat />
       </Box>
     </Box>

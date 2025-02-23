@@ -6,50 +6,49 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { apiClient } from "../../axios";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-export const Services = () => {
-  const navigate = useNavigate();
+export const CatalogItems = () => {
+  const { serviceId } = useParams();
 
   const {
     isLoading,
     isSuccess,
     isError,
-    data: services,
+    data: catalogItems,
   } = useQuery({
-    queryFn: () => apiClient.get("/api/services").then((res) => res.data),
-    queryKey: ["get-services"],
+    queryFn: () =>
+      apiClient
+        .get(`/api/services/${serviceId}/catalogItems`)
+        .then((res) => res.data),
+    queryKey: ["get-catalog-items", serviceId],
   });
 
   return (
     <>
-      {isLoading && <p>Loading services, please wait...</p>}
-      {isError && <p>Sorry! Failed to load services...</p>}
+      {isLoading && <p>Loading items, please wait...</p>}
+      {isError && <p>Sorry! Failed to load catalog items...</p>}
       {isSuccess &&
-        services.data?.map((service) => {
+        catalogItems.data?.map((catalogItem) => {
           return (
             <Card
-              key={service.serviceId}
+              key={catalogItem.catalogItemId}
               sx={{ width: 300, margin: "1%", float: "left" }}
             >
               <CardMedia
                 style={{ height: "150px", width: "150px", margin: "0 auto" }}
-                image="/services.png"
+                image="/product.png"
               />
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                  {service.serviceName}
+                  {catalogItem.catalogItemName}
                 </Typography>
               </CardContent>
               <CardActions
                 style={{ display: "flex", flexDirection: "row-reverse" }}
               >
-                <Button
-                  onClick={() => navigate(service.serviceId)}
-                  size="small"
-                >
-                  Open
-                </Button>
+                <Button size="small">Details</Button>
+                <Button size="small">Run</Button>
               </CardActions>
             </Card>
           );
