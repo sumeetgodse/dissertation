@@ -6,10 +6,11 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { apiClient } from "../../axios";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const CatalogItems = () => {
   const { serviceId } = useParams();
+  const navigate = useNavigate();
 
   const {
     isLoading,
@@ -47,8 +48,16 @@ export const CatalogItems = () => {
               <CardActions
                 style={{ display: "flex", flexDirection: "row-reverse" }}
               >
-                <Button size="small">Details</Button>
-                <Button size="small">Run</Button>
+                <Button
+                  size="small"
+                  onClick={() =>
+                    navigate(
+                      `/services/${catalogItem.serviceId}/run/${catalogItem.catalogItemId}`,
+                    )
+                  }
+                >
+                  Run
+                </Button>
               </CardActions>
             </Card>
           );

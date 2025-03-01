@@ -23,4 +23,13 @@ router.get('/:serviceId/catalogItems', async (req, res) => {
     }
 })
 
+router.get('/:serviceId/catalogItems/:catalogItemId', async (req, res) => {
+    try {
+        const catalogItem = await catalogItemModel.findOne({ serviceId: req.params.serviceId, catalogItemId: req.params.catalogItemId })
+        res.status(200).json(catalogItem)
+    } catch (error) {
+        res.status(500).json({ error: error })
+    }
+})
+
 module.exports = router;

@@ -9,6 +9,7 @@ const allowedPaths = [
   "admin",
   "product-services",
   "custom-vm-services",
+  "run",
 ];
 const pathToName = {
   services: "Service Catalog",
@@ -16,11 +17,14 @@ const pathToName = {
   admin: "Admin",
   "product-services": "Product Services",
   "custom-vm-services": "Custom VM Services",
+  run: "Run Catalog Item",
 };
 const nameToPath = {
   "Service Catalog": "/services",
   "My Resources": "/resources",
   Admin: "/admin",
+  "Product Services": "/services/product-services",
+  "Custom VM Services": "/services/custom-vm-services",
 };
 
 export const BreadCrumbs = () => {
@@ -35,6 +39,7 @@ export const BreadCrumbs = () => {
         .map((path) => {
           return nameToPath[pathToName[path]] ? (
             <Link
+              key={path}
               underline="hover"
               color="inherit"
               className="breadcrumb-link"
@@ -44,6 +49,7 @@ export const BreadCrumbs = () => {
             </Link>
           ) : (
             <Typography
+              key={path}
               className="breadcrumb-link"
               sx={{ color: "text.primary" }}
             >
