@@ -5,6 +5,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const servicesRoute = require('./routes/services');
+const loginRoute = require('./routes/login');
 
 const catalogDatabaseUrl = process.env.CATALOG_DATABASE_URL;
 
@@ -25,6 +26,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/services', servicesRoute);
+app.use('/api/login', loginRoute);
 
 app.listen(3006, () => {
     console.log(`Server Started at ${3006}`)

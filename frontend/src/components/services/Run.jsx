@@ -9,11 +9,10 @@ import {
 } from "@mui/material";
 import { apiClient } from "../../axios";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState } from "react";
 
 export const Run = () => {
-  const navigate = useNavigate();
   const { serviceId, catalogItemId } = useParams();
 
   const {
