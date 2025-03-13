@@ -38,20 +38,28 @@ export const MyResources = () => {
                 image="/resource.png"
               />
               <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
+                <Typography gutterBottom variant="h6" component="div">
                   {resource.resourceName}
                 </Typography>
-                <Typography gutterBottom variant="h6" component="div">
-                  {resource.skuName}
+                <Typography gutterBottom variant="h7" component="div">
+                  {resource.skuName} : {resource.status}
                 </Typography>
               </CardContent>
               <CardActions
                 style={{ display: "flex", flexDirection: "row-reverse" }}
               >
-                <Button size="small">Info</Button>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  color="error"
+                  style={{ margin: "1%" }}
+                >
+                  Destroy
+                </Button>
                 <Button
                   size="small"
                   onClick={() => window.open("https://mui.com/", "_blank")}
+                  style={{ margin: "1%" }}
                 >
                   Launch
                 </Button>

@@ -5,6 +5,7 @@ import { CatalogItems } from "../services/CatalogItems";
 import { Run } from "../services/Run";
 import { Login } from "./Login";
 import { MyResources } from "../../resources/MyResources";
+import { Admin } from "../../admin/Admin";
 
 export const Home = () => {
   return (
@@ -20,7 +21,7 @@ export const Home = () => {
           path="/services/:serviceId/run/:catalogItemId"
           element={<Run />}
         />
-        <Route path="/admin" element={<h1>Admin UI</h1>} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </div>
   );

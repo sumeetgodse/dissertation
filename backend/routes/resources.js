@@ -15,8 +15,13 @@ router.get('/', async (req, res) => {
 
 router.get('/all', async (req, res) => {
     try {
-        const resources = await resourceModel.find()
-        res.status(200).json(resources)
+        if (req.user.type === 'admin') {
+            const resources = await resourceModel.find()
+            res.status(200).json(resources)
+        } else {
+            res.status(200).json('UNAUTHORIZED')
+        }
+
     } catch (error) {
         res.status(500).json({ error: error })
     }
