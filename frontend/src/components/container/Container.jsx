@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import LogoutIcon from "@mui/icons-material/Logout";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
@@ -22,6 +23,8 @@ import AppsIcon from "@mui/icons-material/Apps";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Chat } from "../chat";
 import { Home } from "./Home";
+import { useMutation } from "@tanstack/react-query";
+import apiClient from "../../axios";
 
 const drawerWidth = 240;
 
@@ -103,6 +106,15 @@ const Drawer = styled(MuiDrawer, {
   ],
 }));
 
+const logoutUser = async () => {
+  const response = await apiClient.post("/api/logout", {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return response.data;
+};
+
 export const Container = () => {
   const theme = useTheme();
   const navigate = useNavigate();
@@ -117,28 +129,58 @@ export const Container = () => {
     setOpen(false);
   };
 
+  const { mutate: logout } = useMutation({
+    mutationFn: logoutUser,
+    onSuccess: () => {
+      localStorage.clear("loggedInUser");
+      navigate("/login");
+    },
+  });
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={[
-              {
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{
                 marginRight: 5,
-              },
-              open && { display: "none" },
-            ]}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Product Catalog
-          </Typography>
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" noWrap component="div">
+              Product Catalog
+            </Typography>
+          </Box>
+
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Typography variant="h7" noWrap component="div">
+              {localStorage.getItem("loggedInUser")}
+            </Typography>
+            <IconButton
+              color="inherit"
+              aria-label="logout"
+              onClick={() => logout()}
+              edge="end"
+              sx={{
+                marginRight: 0,
+              }}
+            >
+              <LogoutIcon />
+            </IconButton>
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>

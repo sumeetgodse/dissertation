@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
             sameSite: 'Strict',
             maxAge: 60 * 60 * 1000
         });
-        res.status(200).json(token);
+        res.status(200).json(user.email);
     } catch (error) {
         res.status(500).json(error)
     }

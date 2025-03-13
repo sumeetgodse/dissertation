@@ -5,15 +5,30 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  TextField,
   Typography,
 } from "@mui/material";
 import apiClient from "../../axios";
-import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
+
+const createResource = async (body) => {
+  const response = await apiClient.post(
+    "/api/resources",
+    JSON.stringify(body),
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response;
+};
 
 export const Run = () => {
   const { serviceId, catalogItemId } = useParams();
+  const navigate = useNavigate();
 
   const {
     isLoading,
@@ -28,11 +43,17 @@ export const Run = () => {
     queryKey: ["get-catalog-item", catalogItemId],
   });
 
+  const { isLoading: creatingResource, mutate: runCatalogItem } = useMutation({
+    mutationFn: createResource,
+    onSuccess: () => navigate("/resources"),
+  });
+
   const [formElements, setFormElements] = useState({
     region: "",
     cloudProvider: "",
     installSoftwares: false,
     endDate: "",
+    resourceName: "",
   });
 
   const handleChange = (event) => {
@@ -48,6 +69,7 @@ export const Run = () => {
   return (
     <>
       {isLoading && <p>Loading catalog item, please wait...</p>}
+      {creatingResource && <p>Creating Resource, please wait...</p>}
       {isError && <p>Sorry! Failed to load catalog item...</p>}
       {isSuccess && (
         <div
@@ -67,6 +89,16 @@ export const Run = () => {
           >
             Run {catalogItem.catalogItemName}
           </Typography>
+
+          <TextField
+            onChange={handleChange}
+            id="resourceName"
+            name="resourceName"
+            label="Resource Name"
+            variant="outlined"
+            sx={{ width: "30%", marginBottom: "1%" }}
+          />
+          <br />
 
           <FormControlLabel
             control={
@@ -122,7 +154,15 @@ export const Run = () => {
 
           <br />
           <br />
-          <Button variant="contained" onClick={() => console.log(formElements)}>
+          <Button
+            variant="contained"
+            onClick={() =>
+              runCatalogItem({
+                ...formElements,
+                skuName: catalogItem?.catalogItemName,
+              })
+            }
+          >
             Run
           </Button>
         </div>

@@ -4,6 +4,7 @@ import { BreadCrumbs } from "./BreadCrumbs";
 import { CatalogItems } from "../services/CatalogItems";
 import { Run } from "../services/Run";
 import { Login } from "./Login";
+import { MyResources } from "../../resources/MyResources";
 
 export const Home = () => {
   return (
@@ -12,7 +13,7 @@ export const Home = () => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Navigate to="/resources" />} />
-        <Route path="/resources" element={<h1>My Resources</h1>} />
+        <Route path="/resources" element={<MyResources />} />
         <Route path="/services" element={<Services />} />
         <Route path="/services/:serviceId" element={<CatalogItems />} />
         <Route

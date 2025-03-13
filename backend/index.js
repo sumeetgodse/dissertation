@@ -7,7 +7,9 @@ const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 
 const servicesRoute = require('./routes/services');
+const resourcesRoute = require('./routes/resources');
 const loginRoute = require('./routes/login');
+const logoutRoute = require('./routes/logout');
 
 const catalogDatabaseUrl = process.env.CATALOG_DATABASE_URL;
 
@@ -51,7 +53,9 @@ const verifyToken = (req, res, next) => {
 }
 
 app.use('/api/services', verifyToken, servicesRoute);
+app.use('/api/resources', verifyToken, resourcesRoute);
 app.use('/api/login', loginRoute);
+app.use('/api/logout', logoutRoute);
 
 app.listen(3006, () => {
     console.log(`Server Started at ${3006}`)

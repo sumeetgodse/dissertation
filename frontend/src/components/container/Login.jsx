@@ -24,7 +24,10 @@ export const Login = () => {
     isError,
   } = useMutation({
     mutationFn: loginUser,
-    onSuccess: () => navigate("/"),
+    onSuccess: (data) => {
+      localStorage.setItem("loggedInUser", data);
+      navigate("/");
+    },
   });
 
   const handleLogin = () => {
