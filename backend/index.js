@@ -3,6 +3,8 @@ require('dotenv').config();
 const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 
 const servicesRoute = require('./routes/services');
 const loginRoute = require('./routes/login');
@@ -22,10 +24,33 @@ users.once('connected', () => {
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
+const corsOptions = {
+    origin: 'http://localhost:5173',
+    credentials: true,
+};
 
-app.use('/api/services', servicesRoute);
+app.use(cors(corsOptions)); app.use(express.json());
+app.use(cookieParser());
+
+const verifyToken = (req, res, next) => {
+    const token = req.cookies.jwt;
+
+    if (!token) {
+        return res.status(401).send('Unauthorized');
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            console.log(err)
+            return res.status(401).send('Unauthorized');
+        }
+
+        req.user = decoded;
+        next();
+    });
+}
+
+app.use('/api/services', verifyToken, servicesRoute);
 app.use('/api/login', loginRoute);
 
 app.listen(3006, () => {

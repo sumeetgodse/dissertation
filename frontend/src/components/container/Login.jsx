@@ -1,8 +1,8 @@
 import { Button, TextField, Typography } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { apiClient } from "../../axios";
 import { useNavigate } from "react-router-dom";
+import apiClient from "../../axios";
 
 const loginUser = async (body) => {
   const response = await apiClient.post("/api/login", JSON.stringify(body), {
