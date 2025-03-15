@@ -1,0 +1,3 @@
+- clone this repo
+- run `pip install -r requirements.txt`
+- run `uvicorn api:app --reload`

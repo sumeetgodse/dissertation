@@ -1,0 +1,108 @@
+ The Catalog Documentation
+
+ Introduction
+
+The Catalog is a powerful tool for sharing automations and deploying your company's products in a seamless and efficient manner. Designed to serve organizations of any size, The Catalog helps you easily manage resources, automate tasks, and provide users with the ability to interact with a variety of products and services offered within your company.
+
+This document provides an in-depth explanation of the Catalog, its key features, architecture, and how users and admins can interact with the system.
+
+ Key Features
+
+ 1. User Authentication and RBAC
+
+The Catalog utilizes role-based access control (RBAC) to manage permissions for different users. There are two main roles in the application:
+- Admin: Admins have the ability to view and manage all resources across the entire organization. They can perform tasks such as reviewing user-generated resources, modifying configurations, and resolving any issues users face with their resources.
+- User: Users are able to create, manage, and destroy resources in their own environment. Users are granted access based on their organization email, and they are restricted from viewing or modifying resources that are not associated with their own account.
+
+Authentication is handled using JWT tokens and cookies, ensuring a secure login process. After successful login, the user's session is maintained with cookies containing the JWT token, allowing users to interact with the backend system without needing to repeatedly enter their credentials. In case of an expired or invalid token, users are redirected to the `/login` page to authenticate themselves again.
+
+ 2. Frontend and UI
+
+The frontend of The Catalog is built using React and Vite for fast development and high performance. The application is designed with Material UI, ensuring a modern and responsive user interface. Users can access various product lines, manage resources, and interact with the chat service for guidance, all through a user-friendly interface.
+
+- The Login Page: The application uses a standard login page where users can authenticate themselves with their organizational email. Upon successful authentication, the users are redirected to the home page where they can view and manage their resources.
+  
+- Chat Integration: A Python-based RAG chat service is integrated into the application, providing real-time assistance via a chat icon located in the bottom-right corner of the page. This service can help users understand the product catalog, navigate features, and troubleshoot any issues they may encounter.
+
+ 3. Backend and API
+
+The backend of The Catalog is powered by ExpressJS, a fast and minimal web framework for Node.js. The backend serves as the intermediary between the frontend and various services used for resource management, including cloud resource provisioning, automation execution, and user authentication.
+
+- Authentication: User login is handled with JWT and cookies. Once the user logs in, a JWT token is issued, which is stored in the browser's cookies for maintaining session persistence.
+  
+- Resource Management: Users can interact with the catalog items, execute automation tasks, and create resources on various cloud providers, including AWS, GCP, and Azure. When a resource is created, the relevant details (resource name, cloud provider, region, and end date) are recorded, and the resource is visible on the user's "My Resources" page.
+
+- Resource Status: Each resource created by the user is tracked with its status (running, destroyed, etc.). Users can launch or destroy resources from their personal dashboard. Admins can also view and manage all resources within the organization.
+
+ 4. Cloud Providers and Resource Creation
+
+The Catalog allows users to select a cloud provider (AWS, GCP, or Azure), define a region (e.g., US, India, Europe), and provide an end date for when the resource will be automatically destroyed. This ensures that cloud resources are not kept longer than needed, optimizing cost and resource usage.
+
+ Steps to Create a Resource:
+1. Choose a Resource Name: Users can specify any name for the resource they are creating.
+2. Select a Cloud Provider: Choose between AWS, GCP, or Azure.
+3. Choose a Region: Select the region in which the resource will be provisioned (e.g., US, India, Europe).
+4. Set End Date: Provide the end date for the resource, after which it will automatically be destroyed, ensuring that cloud resources are freed after use.
+
+Once the resource is created, it will be added to the My Resources page, where users can see the status of their resources and manage them as needed.
+
+ Resource Actions:
+- Launch: Start a resource after it has been created.
+- Destroy: Destroy the resource and free the cloud resources before the end date (if needed).
+
+ 5. Admin Features
+
+Admins have access to a special user interface that allows them to manage all resources within the organization. Admins can:
+- View All Resources: Admins can see every resource created by any user, providing them with a centralized overview of resource usage.
+- Manage Resources: Admins can manage, launch, or destroy resources that may have issues, ensuring that cloud resources are correctly managed and freed when necessary.
+- Troubleshooting: In case users encounter issues with their resources, admins can help by inspecting the resource logs, running diagnostics, or reconfiguring resources.
+
+ 6. Service Catalog
+
+The Catalog provides a service catalog with different product lines. Each product line contains various catalog items that users can run based on their requirements. These items are automated tasks that can be executed with specific inputs such as cloud provider, region, and end date.
+
+Users can browse the catalog, select a product line, and execute the catalog items by providing the necessary inputs.
+
+ 7. My Resources Page
+
+Once a user has run a catalog item, they can track the resource in their My Resources page. This page displays all the resources they have created, their current status, and options to launch or destroy the resource.
+
+Key features of the My Resources page:
+- Resource Name: The name of the resource as defined by the user.
+- Cloud Provider: The cloud provider (AWS, GCP, or Azure) associated with the resource.
+- Region: The region in which the resource is deployed.
+- End Date: The end date when the resource will be destroyed automatically.
+- Resource Status: Indicates whether the resource is running or destroyed.
+
+ 8. User Experience
+
+- Interactive Chat: Users can click on the chat icon to open the RAG chat service, which provides real-time assistance. Whether users need help understanding how the catalog works, troubleshooting issues, or need more information about specific catalog items, the chat service serves as a valuable support tool.
+  
+- Seamless Resource Management: With a user-friendly interface, users can easily create and manage resources without needing deep technical knowledge. The ability to automatically destroy resources after use ensures that users don’t have to worry about forgotten cloud resources running indefinitely.
+
+ 9. Security and Authentication
+
+- JWT Authentication: All user authentication is handled securely with JWT tokens. Upon successful login, a JWT is generated and stored in the user's browser as a cookie.
+  
+- Session Management: If a user's session expires, they will be redirected to the /login page for re-authentication.
+  
+- Secure User Roles: The RBAC system ensures that users can only access the features they are authorized to, preventing unauthorized access to sensitive data or resources.
+
+ 10. Technology Stack
+
+- Frontend: 
+  - React and Vite for fast, modern UI development.
+  - Material UI for a consistent and professional design.
+  
+- Backend: 
+  - ExpressJS as the web framework to handle API requests, user authentication, and resource management.
+
+- Chat Service: 
+  - A Python-based RAG (retrieval-augmented generation) chat service integrated into the UI for user support.
+
+- Cloud Providers: 
+  - AWS, GCP, and Azure for resource provisioning.
+
+ Conclusion
+
+The Catalog is a comprehensive platform that enables users to manage cloud resources easily and efficiently. With its role-based access control, chat service integration, and user-friendly interface, it provides a seamless experience for both users and administrators. By automating resource creation, management, and destruction, The Catalog ensures that your organization can optimize cloud resource usage while maintaining control and security.

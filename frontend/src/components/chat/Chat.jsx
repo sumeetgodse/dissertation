@@ -5,7 +5,7 @@ export const Chat = () => {
   async function postQuery(query) {
     try {
       const response = await fetch(
-        "https://ca40-27-100-12-109.ngrok-free.app/query",
+        "http://localhost:8000/query",
         {
           method: "POST",
           headers: {
