@@ -4,10 +4,13 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import apiClient from "../axios";
+import { destroyResource } from "./utils";
 
 export const MyResources = () => {
+  const queryClient = useQueryClient();
+
   const {
     isLoading,
     isSuccess,
@@ -18,9 +21,16 @@ export const MyResources = () => {
     queryKey: ["get-my-resources"],
   });
 
+  const { isLoading: destroyingResource, mutate: destroy } = useMutation({
+    mutationFn: destroyResource,
+    onSuccess: () => queryClient.invalidateQueries(["get-my-resources"]),
+  });
+
   return (
     <>
-      {isLoading && <p>Loading items, please wait...</p>}
+      {(isLoading || destroyingResource) && (
+        <p>Loading items, please wait...</p>
+      )}
       {isError && <p>Sorry! Failed to load resources...</p>}
       {isSuccess && resources.length === 0 && (
         <p>Sorry! You do not have any resources...</p>
@@ -53,6 +63,8 @@ export const MyResources = () => {
                   variant="outlined"
                   color="error"
                   style={{ margin: "1%" }}
+                  onClick={() => destroy(resource.resourceId)}
+                  disabled={resource.status === "DESTROYED"}
                 >
                   Destroy
                 </Button>
@@ -60,6 +72,7 @@ export const MyResources = () => {
                   size="small"
                   onClick={() => window.open("https://mui.com/", "_blank")}
                   style={{ margin: "1%" }}
+                  disabled={resource.status === "DESTROYED"}
                 >
                   Launch
                 </Button>

@@ -50,4 +50,23 @@ router.post('/', async (req, res) => {
     }
 })
 
+router.put('/:resourceId/destroy', async (req, res) => {
+    try {
+        const destroyedResource = await resourceModel.findOneAndUpdate(
+            { resourceId: req.params.resourceId },
+            { status: 'DESTROYED' },
+            { new: true }
+        )
+        destroyedResource.status = 'DESTROYED'
+
+        if (!destroyedResource) {
+            return res.status(404).json({ message: 'Resource not found' });
+        }
+
+        res.status(200).json(destroyedResource);
+    } catch (error) {
+        res.status(500).json(error)
+    }
+})
+
 module.exports = router;

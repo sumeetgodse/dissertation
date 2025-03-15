@@ -1,4 +1,3 @@
-import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,23 +5,14 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import apiClient from "../axios";
-import { useQuery } from "@tanstack/react-query";
+import apiClient from "../../axios";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@mui/material";
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
+import { destroyResource } from "../../resources/utils";
 
 export const Admin = () => {
+  const queryClient = useQueryClient();
+
   const {
     isLoading,
     isSuccess,
@@ -30,6 +20,11 @@ export const Admin = () => {
   } = useQuery({
     queryFn: () => apiClient.get("/api/resources/all").then((res) => res.data),
     queryKey: ["get-all-resources"],
+  });
+
+  const { isLoading: destroyingResource, mutate: destroy } = useMutation({
+    mutationFn: destroyResource,
+    onSuccess: () => queryClient.invalidateQueries(["get-all-resources"]),
   });
 
   return (
@@ -61,6 +56,7 @@ export const Admin = () => {
                   <Button
                     size="small"
                     onClick={() => window.open("https://mui.com/", "_blank")}
+                    disabled={resource.status === "DESTROYED"}
                   >
                     Launch
                   </Button>
@@ -71,6 +67,8 @@ export const Admin = () => {
                     variant="outlined"
                     color="error"
                     style={{ margin: "1%" }}
+                    onClick={() => destroy(resource.resourceId)}
+                    disabled={resource.status === "DESTROYED"}
                   >
                     Destroy
                   </Button>
@@ -80,7 +78,7 @@ export const Admin = () => {
             ))}
         </TableBody>
       </Table>
-      {isLoading && <p>Please wait...</p>}
+      {(isLoading || destroyingResource) && <p>Please wait...</p>}
       {isSuccess && resources === "UNAUTHORIZED" && (
         <p>Sorry! You do not have access to this feature!</p>
       )}

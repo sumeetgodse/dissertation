@@ -5,7 +5,7 @@ import { CatalogItems } from "../services/CatalogItems";
 import { Run } from "../services/Run";
 import { Login } from "./Login";
 import { MyResources } from "../../resources/MyResources";
-import { Admin } from "../../admin/Admin";
+import { Admin } from "../admin/Admin";
 
 export const Home = () => {
   return (
